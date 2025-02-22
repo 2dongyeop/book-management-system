@@ -1,0 +1,53 @@
+ROOT_LOG_LEVEL: DEBUG
+SQL_LOG_LEVEL: DEBUG
+JDBC_BIND_LOG_LEVEL: TRACE
+
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+    hikari: # DB Connection Pool \uC124\uC815. \uD604\uC7AC \uC9C0\uC815\uD55C \uAC12\uB4E4\uC740 \uBAA8\uB450 \uAE30\uBCF8 \uAC12\uC5D0 \uD574\uB2F9.
+      connection-timeout: 30000 # - \uD0C0\uC784\uC544\uC6C3 \uAC12
+      validation-timeout: 5000  # - \uC720\uD6A8\uD55C \uD0C0\uC784\uC544\uC6C3
+      minimum-idle: 10          # - \uC720\uD734 \uCEE4\uB125\uC158 \uC218 (default: 10)
+      max-lifetime: 1800000     # - \uCEE4\uB125\uC158\uC758 \uCD5C\uB300 \uC218\uBA85
+      maximum-pool-size: 10     # - \uCD5C\uB300 \uD480 \uC0AC\uC774\uC988 (default: 10)
+      idle-timeout: 600000      # - \uC5F0\uACB0\uC744 \uC704\uD55C \uCD5C\uB300 \uC720\uD734 \uC2DC\uAC04
+      auto-commit: true         # - auto commit \uC5EC\uBD80
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+        database-platform: org.hibernate.dialect.H2Dialect
+
+  h2:
+    console:
+      enabled: true # h2 console \uD65C\uC131\uD654 \uC5EC\uBD80. \uAE30\uBCF8 \uAC12: false
+      path: /h2     # h2 console \uC811\uC18D \uACBD\uB85C. \uAE30\uBCF8 \uAC12 : /h2-console
+
+# LOG
+logging:
+  pattern:
+    console: "[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%clr(%-5p)][%thread][%clr(%logger{20}.%method){cyan}] - %msg%n"
+    file: "[%d{yyyy-MM-dd HH:mm:ss}:%-3relative][%-5p][%thread][%logger{20}.%method] - %msg%n"
+
+  file:
+    name: ./logs/api-book.log
+
+  level:
+    io.dongvelop.bookmanagementsystem: ${ROOT_LOG_LEVEL}
+    org.hibernate.SQL: ${SQL_LOG_LEVEL}
+    org.hibernate.orm.jdbc.bind: ${JDBC_BIND_LOG_LEVEL}
+
+  logback:
+    rollingpolicy:
+      max-file-size: 20MB
+      max-history: 30
+      file-name-pattern: "${LOG_FILE}.%d{yyyy-MM-dd}_%i"
+      total-size-cap: 1GB
