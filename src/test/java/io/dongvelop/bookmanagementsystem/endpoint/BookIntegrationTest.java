@@ -112,6 +112,28 @@ class BookIntegrationTest extends IntegrationTest {
             // then
             result.andExpect(status().isOk());
         }
+
+        @Test
+        @DisplayName("특정 제목을 포함한 도서 목록을 조회한다.")
+        void success2() throws Exception {
+
+            // given
+            final CreateBookRequest request1 = new CreateBookRequest("title test", "description", "123-456789-0", LocalDate.now(), author.getId());
+            final CreateBookRequest request2 = new CreateBookRequest("title text", "description", "223-456789-0", LocalDate.now(), author.getId());
+
+            bookService.createBook(request1);
+            bookService.createBook(request2);
+
+            // when
+            var result = mockMvc.perform(get("/books")
+                    .param("title", "text")
+            );
+
+            // then
+            result.andExpect(status().isOk())
+                    .andExpect(jsonPath("$.content").isArray())
+                    .andExpect(jsonPath("$.content[0].title").value("title text"));
+        }
     }
 
     @Nested

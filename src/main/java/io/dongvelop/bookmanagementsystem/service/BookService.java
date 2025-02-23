@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 /**
  * @author 이동엽(Lee Dongyeop)
@@ -52,11 +53,16 @@ public class BookService {
      * 도서 목록 조회 <br/>
      *
      * @param pageable 페이지 번호 및 크기 등의 페이징 정보
+     * @param title    도서 제목
      */
-    public Page<Book> getBookList(final Pageable pageable) {
-        log.debug("pageable[{}]", pageable);
+    public Page<Book> getBookList(final Pageable pageable, final String title) {
+        log.debug("pageable[{}], title[{}]", pageable, title);
 
-        return bookRepository.findAll(pageable);
+        if (StringUtils.hasText(title)) {
+            return bookRepository.findBooksByTitleContainsIgnoreCase(title, pageable);
+        } else {
+            return bookRepository.findAll(pageable);
+        }
     }
 
     /**

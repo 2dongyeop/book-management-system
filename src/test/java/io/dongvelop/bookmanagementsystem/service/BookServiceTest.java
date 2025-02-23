@@ -138,7 +138,7 @@ class BookServiceTest {
             given(bookRepository.findAll(pageable)).willReturn(mockedBooks);
 
             // when
-            final Page<Book> result = bookService.getBookList(pageable);
+            final Page<Book> result = bookService.getBookList(pageable, "");
 
             // then
             Assertions.assertThat(result.getSize()).isEqualTo(mockedBooks.getSize());

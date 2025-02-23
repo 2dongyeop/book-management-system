@@ -50,20 +50,22 @@ public class BookEndpoint implements BookAPISpec {
 
     /**
      * 도서 목록 조회 <br/>
-     * TODO : 조건별 필터링 추가
      *
      * @param page 페이지 번호
      * @param size 페이지 크기
      */
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Page<BookListResponse>> getBookList(@RequestParam(required = false, defaultValue = "0") final int page,
-                                                              @RequestParam(required = false, defaultValue = "10") final int size,
-                                                              @RequestParam(required = false, defaultValue = "id") final String sort) {
+    public ResponseEntity<Page<BookListResponse>> getBookList(
+            @RequestParam(required = false, defaultValue = "0") final int page,
+            @RequestParam(required = false, defaultValue = "10") final int size,
+            @RequestParam(required = false, defaultValue = "id") final String sort,
+            @RequestParam(required = false, defaultValue = "") final String title
+    ) {
         log.info("page[{}], size[{}], sort[{}]", page, size, sort);
         final PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
 
-        return ResponseEntity.ok(bookService.getBookList(pageRequest).map(BookListResponse::of));
+        return ResponseEntity.ok(bookService.getBookList(pageRequest, title).map(BookListResponse::of));
     }
 
     /**

@@ -74,11 +74,11 @@ public interface BookAPISpec {
     })
     ResponseEntity<?> createBook(CreateBookRequest request) throws APIException;
 
-    @Operation(summary = "도서 목록 조회 API", description = "페이징 정보를 함께 요청하여 페이징 처리할 수 있습니다.")
+    @Operation(summary = "도서 목록 조회 API", description = "제목을 포함하여 검색이 가능하며, 결과는 페이징 처리되어 반환합니다.")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "요청 성공"),
     })
-    ResponseEntity<?> getBookList(int page, int size, String sortBy) throws APIException;
+    ResponseEntity<?> getBookList(int page, int size, String sortBy, String title) throws APIException;
 
     @Operation(summary = "도서 상세 조회 API", description = "")
     @ApiResponses(value = {

@@ -101,7 +101,7 @@ class BookEndpointTest {
             final CreateBookRequest request2 = new CreateBookRequest("title", "description", "223-456789-0", LocalDate.now(), author.getId());
 
             final PageImpl<Book> response = new PageImpl<>(List.of(request1.toEntity(author), request2.toEntity(author)));
-            given(bookService.getBookList(any())).willReturn(response);
+            given(bookService.getBookList(any(), any())).willReturn(response);
 
             // when
             var result = mockMvc.perform(get("/books"));
