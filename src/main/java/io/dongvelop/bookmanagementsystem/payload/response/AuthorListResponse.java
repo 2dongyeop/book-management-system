@@ -12,13 +12,13 @@ import java.util.List;
 public record AuthorListResponse(
         String name,
         String email,
-        List<BookResponse> books
+        List<BookListResponse> books
 ) {
     public static AuthorListResponse from(final Author author) {
         return new AuthorListResponse(
                 author.getName(),
                 author.getEmail(),
-                author.getBooks().stream().map(BookResponse::of).toList()
+                author.getBooks().stream().map(BookListResponse::of).toList()
         );
     }
 }

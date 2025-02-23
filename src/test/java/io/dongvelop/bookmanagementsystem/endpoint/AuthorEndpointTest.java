@@ -92,17 +92,14 @@ class AuthorEndpointTest {
 
         @AutoSource
         @ParameterizedTest
-        @DisplayName("기본적으로 최대 30개의 저자 목록을 조회한다.")
-        void success(int pageSize, int pageNum, List<Author> responses) throws Exception {
+        @DisplayName("저자 목록을 조회한다.")
+        void success(List<Author> responses) throws Exception {
 
             // given
-            given(authorService.getAuthorList(pageSize, pageNum)).willReturn(responses);
+            given(authorService.getAuthorList()).willReturn(responses);
 
             // when
-            var result = mockMvc.perform(get("/authors")
-                    .param("pageSize", String.valueOf(pageSize))
-                    .param("pageNum", String.valueOf(pageNum))
-            );
+            var result = mockMvc.perform(get("/authors"));
 
             // then
             result.andExpect(status().isOk());
@@ -136,7 +133,7 @@ class AuthorEndpointTest {
             // given
             given(authorService.getAuthorDetail(authorId)).willThrow(
                     new APIException(
-                            HttpStatus.BAD_REQUEST,
+                            HttpStatus.NOT_FOUND,
                             ErrorType.NOT_EXIST_DATA,
                             "authorId[" + authorId + "] not found"
                     )
@@ -146,7 +143,7 @@ class AuthorEndpointTest {
             var result = mockMvc.perform(get("/authors/{id}", authorId));
 
             // then
-            result.andExpect(status().isBadRequest())
+            result.andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.error_code").value(ErrorType.NOT_EXIST_DATA.getValue()));
         }
     }
@@ -162,7 +159,7 @@ class AuthorEndpointTest {
 
             // given
             doThrow(new APIException(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.NOT_FOUND,
                     ErrorType.NOT_EXIST_DATA,
                     "authorId[" + authorId + "] not found"
             )).when(authorService).updateAuthor(authorId, request);
@@ -174,7 +171,7 @@ class AuthorEndpointTest {
             );
 
             // then
-            result.andExpect(status().isBadRequest())
+            result.andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.error_code").value(ErrorType.NOT_EXIST_DATA.getValue()));
         }
     }
@@ -190,7 +187,7 @@ class AuthorEndpointTest {
 
             // given
             doThrow(new APIException(
-                    HttpStatus.BAD_REQUEST,
+                    HttpStatus.NOT_FOUND,
                     ErrorType.NOT_EXIST_DATA,
                     "authorId[" + authorId + "] not found"
             )).when(authorService).deleteAuthor(authorId);
@@ -199,7 +196,7 @@ class AuthorEndpointTest {
             var result = mockMvc.perform(delete("/authors/{id}", authorId));
 
             // then
-            result.andExpect(status().isBadRequest())
+            result.andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.error_code").value(ErrorType.NOT_EXIST_DATA.getValue()));
         }
     }

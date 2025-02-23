@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -30,7 +30,7 @@ class UtilsTest {
             // when
             final APIException apiException = Assertions.assertThrows(
                     APIException.class,
-                    () -> new Book("title", null, invalidISBN, LocalDateTime.now(), new Author("name", "email@naver.com"))
+                    () -> new Book("title", null, invalidISBN, LocalDate.now(), new Author("name", "email@naver.com"))
             );
 
             // then
@@ -49,7 +49,7 @@ class UtilsTest {
             // when
             final APIException apiException = Assertions.assertThrows(
                     APIException.class,
-                    () -> new Book("title", null, invalidISBN, LocalDateTime.now(), new Author("name", "email@naver.com"))
+                    () -> new Book("title", null, invalidISBN, LocalDate.now(), new Author("name", "email@naver.com"))
             );
 
             // then
@@ -68,7 +68,7 @@ class UtilsTest {
             // when
             final APIException apiException = Assertions.assertThrows(
                     APIException.class,
-                    () -> new Book("title", null, invalidISBN, LocalDateTime.now(), new Author("name", "email@naver.com"))
+                    () -> new Book("title", null, invalidISBN, LocalDate.now(), new Author("name", "email@naver.com"))
             );
 
             // then
@@ -87,7 +87,7 @@ class UtilsTest {
             // when
             final APIException apiException = Assertions.assertThrows(
                     APIException.class,
-                    () -> new Book("title", null, invalidISBN, LocalDateTime.now(), new Author("name", "email@naver.com"))
+                    () -> new Book("title", null, invalidISBN, LocalDate.now(), new Author("name", "email@naver.com"))
             );
 
             // then
@@ -106,7 +106,7 @@ class UtilsTest {
             // when
             final APIException apiException = Assertions.assertThrows(
                     APIException.class,
-                    () -> new Book("title", null, invalidISBN, LocalDateTime.now(), new Author("name", "email@naver.com"))
+                    () -> new Book("title", null, invalidISBN, LocalDate.now(), new Author("name", "email@naver.com"))
             );
 
             // then
@@ -125,7 +125,7 @@ class UtilsTest {
             // when
             final APIException apiException = Assertions.assertThrows(
                     APIException.class,
-                    () -> new Book("title", null, invalidISBN, LocalDateTime.now(), new Author("name", "email@naver.com"))
+                    () -> new Book("title", null, invalidISBN, LocalDate.now(), new Author("name", "email@naver.com"))
             );
 
             // then

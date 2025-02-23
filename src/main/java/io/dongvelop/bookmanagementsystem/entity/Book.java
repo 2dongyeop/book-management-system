@@ -1,15 +1,20 @@
 package io.dongvelop.bookmanagementsystem.entity;
 
+import io.dongvelop.bookmanagementsystem.common.Const;
 import io.dongvelop.bookmanagementsystem.common.Utils;
 import io.dongvelop.bookmanagementsystem.excepiton.APIException;
+import io.dongvelop.bookmanagementsystem.payload.request.UpdateBookRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
+import org.springframework.util.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Objects;
 
 /**
  * @author 이동엽(Lee Dongyeop)
@@ -19,6 +24,7 @@ import java.time.LocalDateTime;
 @Entity
 @Getter
 @Table(name = "book")
+@ToString(exclude = {"author"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Book extends BaseEntity implements Serializable {
 
@@ -51,7 +57,7 @@ public class Book extends BaseEntity implements Serializable {
      * [선택] 출판일
      */
     @Column(name = "publication_date")
-    private LocalDateTime publicationDate;
+    private LocalDate publicationDate;
 
     /**
      * [필수] 저자
@@ -61,7 +67,7 @@ public class Book extends BaseEntity implements Serializable {
     private Author author;
 
     public Book(String title, String nullableDescription, String isbn,
-                LocalDateTime nullablePublicationDate, Author author) throws APIException {
+                LocalDate nullablePublicationDate, Author author) throws APIException {
 
         Utils.validateISBN10(isbn);
 
@@ -71,5 +77,27 @@ public class Book extends BaseEntity implements Serializable {
         this.publicationDate = nullablePublicationDate;
         this.author = author;
         author.getBooks().add(this);
+    }
+
+    public String getDescription() {
+        return Objects.requireNonNullElse(this.description, Const.STRING_EMPTY);
+    }
+
+    public LocalDate getPublicationDate() {
+        return Objects.requireNonNullElse(this.publicationDate, LocalDate.now());
+    }
+
+    public void update(final UpdateBookRequest request) {
+        if (StringUtils.hasText(request.title())) {
+            this.title = request.title();
+        }
+
+        if (StringUtils.hasText(request.description())) {
+            this.description = request.description();
+        }
+
+        if (request.publicationDate() != null) {
+            this.publicationDate = request.publicationDate();
+        }
     }
 }

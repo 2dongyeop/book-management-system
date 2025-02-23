@@ -33,6 +33,8 @@ public class AuthorEndpoint implements AuthAPISpec {
 
     /**
      * 저자 생성 API
+     *
+     * @param request 생성할 저자 정보
      */
     @Override
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -48,17 +50,12 @@ public class AuthorEndpoint implements AuthAPISpec {
     /**
      * 저자 목록 조회 API
      *
-     * @param pageSize [선택] 페이징 크기
-     * @param pageNum  [선택] 페이지 번호
      * @return 저자 목록
      */
     @Override
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<AuthorListResponse>> getAuthorList(@RequestParam(required = false, defaultValue = "30") final int pageSize,
-                                                                  @RequestParam(required = false, defaultValue = "0") final int pageNum) {
-        log.info("pageSize[{}], pageNum[{}]", pageSize, pageNum);
-
-        return ResponseEntity.ok(authorService.getAuthorList(pageSize, pageNum)
+    public ResponseEntity<List<AuthorListResponse>> getAuthorList() {
+        return ResponseEntity.ok(authorService.getAuthorList()
                 .stream()
                 .map(AuthorListResponse::from)
                 .toList()

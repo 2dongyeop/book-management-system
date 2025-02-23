@@ -81,14 +81,14 @@ class AuthorServiceTest {
 
         @AutoSource
         @ParameterizedTest
-        @DisplayName("최대 30개의 저자 목록 조회에 성공한다.")
-        void fail(List<Author> authors, int pageSize, int pageNum) {
+        @DisplayName("저자 목록 조회에 성공한다.")
+        void fail(List<Author> authors) {
 
             // given
-            given(authorRepository.findAuthorsWithPaging(any())).willReturn(authors);
+            given(authorRepository.findAuthorsWithPaging()).willReturn(authors);
 
             // when
-            final List<Author> result = authorService.getAuthorList(pageSize, pageNum);
+            final List<Author> result = authorService.getAuthorList();
 
             // then
             Assertions.assertThat(result.size()).isEqualTo(authors.size());
@@ -127,7 +127,7 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.getAuthorDetail(authorId));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
             Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
         }
     }
@@ -163,7 +163,7 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.updateAuthor(authorId, request));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
             Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
         }
 
@@ -216,7 +216,7 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.deleteAuthor(authorId));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
             Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
         }
     }

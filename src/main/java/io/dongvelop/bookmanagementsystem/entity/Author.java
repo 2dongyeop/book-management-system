@@ -7,6 +7,7 @@ import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.http.HttpStatus;
 import org.springframework.util.StringUtils;
 
@@ -23,6 +24,7 @@ import java.util.List;
 @Entity
 @Getter
 @Table(name = "author")
+@ToString(exclude = {"books"})
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Author extends BaseEntity implements Serializable {
 

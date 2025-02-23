@@ -10,10 +10,8 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @DataJpaTest
@@ -69,14 +67,12 @@ class AuthorRepositoryTest {
             // given
             authorRepository.save(author);
 
-            final Book book1 = new Book("title1", "description", "123-456789-0", LocalDateTime.now(), author);
-            final Book book2 = new Book("title2", "description", "124-456789-0", LocalDateTime.now(), author);
+            final Book book1 = new Book("title1", "description", "123-456789-0", LocalDate.now(), author);
+            final Book book2 = new Book("title2", "description", "124-456789-0", LocalDate.now(), author);
             bookRepository.saveAll(List.of(book1, book2));
 
-            final PageRequest pageRequest = PageRequest.of(0, 30, Sort.by("id").ascending());
-
             // when
-            final List<Author> authors = authorRepository.findAuthorsWithPaging(pageRequest);
+            final List<Author> authors = authorRepository.findAuthorsWithPaging();
 
             // then
             Assertions.assertThat(authors).hasSize(1);

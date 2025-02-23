@@ -2,12 +2,14 @@ package io.dongvelop.bookmanagementsystem.excepiton;
 
 import io.dongvelop.bookmanagementsystem.common.Const;
 import io.dongvelop.bookmanagementsystem.common.Utils;
+import jakarta.validation.ConstraintDefinitionException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -54,6 +56,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = MethodArgumentNotValidException.class)
     public ResponseEntity<?> methodArgumentNotValid(MethodArgumentNotValidException e) {
         return getExceptionResponse(ErrorType.INVALID_INPUT, getCauseDetailMessages(e), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * `@ValidISVN10` 등과 같은 Custom Valid 애너테이션의 유효성 검증을 통과하지 못했을 경우
+     */
+    @ExceptionHandler(value = ConstraintDefinitionException.class)
+    public ResponseEntity<?> constraintDefinitionException(ConstraintDefinitionException e) {
+        return getExceptionResponse(ErrorType.INVALID_INPUT, getCauseMessage(e), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * LocalDate 등의 시간 타입에 포맷이 잘못되어 요청이 왔을 경우.
+     */
+    @ExceptionHandler(value = HttpMessageNotReadableException.class)
+    public ResponseEntity<?> httpMessageNotReadableException(HttpMessageNotReadableException e) {
+        return getExceptionResponse(ErrorType.INVALID_INPUT, getCauseMessage(e), HttpStatus.BAD_REQUEST);
     }
 
     /**

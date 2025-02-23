@@ -13,14 +13,14 @@ public record AuthorDetailResponse(
         Long id,
         String name,
         String email,
-        List<BookResponse> books
+        List<BookListResponse> books
 ) {
     public static AuthorDetailResponse of(final Author author) {
         return new AuthorDetailResponse(
                 author.getId(),
                 author.getName(),
                 author.getEmail(),
-                author.getBooks().stream().map(BookResponse::of).toList()
+                author.getBooks().stream().map(BookListResponse::of).toList()
         );
     }
 }

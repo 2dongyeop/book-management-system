@@ -11,8 +11,6 @@ import io.dongvelop.bookmanagementsystem.repository.BookRepository;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,8 +24,8 @@ import java.util.List;
  */
 @Slf4j
 @Service
-@Transactional(readOnly = true)
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
@@ -41,7 +39,7 @@ public class AuthorService {
         log.debug("request[{}]", request);
 
         if (isAlreadyExistEmail(request.email())) {
-            throw new APIException(HttpStatus.BAD_REQUEST, ErrorType.EXIST_DATA, request.email());
+            throw new APIException(HttpStatus.BAD_REQUEST, ErrorType.EXIST_DATA, "email[" + request.email() + "] is already exist");
         }
 
         return authorRepository.save(request.toEntity());
@@ -50,17 +48,11 @@ public class AuthorService {
     /**
      * 저자 목록 조회 메서드
      *
-     * @param pageSize 페이지 크기
-     * @param pageNum  페이지 번호
      * @return 저자 목록
      */
-    public List<Author> getAuthorList(final int pageSize, final int pageNum) {
-        log.debug("pageSize[{}], pageNum[{}]", pageSize, pageNum);
-
-        // 저자 목록이 많아졌을 때 한번에 조회할 경우, 메모리를 많이 차지하므로 페이지 처리를 내부적으로 처리.
-        final PageRequest pageRequest = PageRequest.of(pageNum, pageSize, Sort.by("id").ascending());
-
-        return authorRepository.findAuthorsWithPaging(pageRequest);
+    public List<Author> getAuthorList() {
+        // 저자 목록이 많아졌을 때 한번에 조회할 경우, 메모리를 많이 차지할 수 있음.
+        return authorRepository.findAuthorsWithPaging();
     }
 
     /**
@@ -70,7 +62,7 @@ public class AuthorService {
         log.debug("authorId[{}]", authorId);
 
         return authorRepository.findById(authorId)
-                .orElseThrow(() -> new APIException(HttpStatus.BAD_REQUEST, ErrorType.NOT_EXIST_DATA, "authorId[" + authorId + "] not found"));
+                .orElseThrow(() -> new APIException(HttpStatus.NOT_FOUND, ErrorType.NOT_EXIST_DATA, "authorId[" + authorId + "] not found"));
     }
 
     /**

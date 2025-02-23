@@ -76,7 +76,7 @@ class AuthorIntegrationTest extends IntegrationTest {
 
         @AutoSource
         @ParameterizedTest
-        @DisplayName("기본적으로 최대 30개의 저자 목록을 조회한다.")
+        @DisplayName("저자 목록을 조회한다.")
         void success(List<CreateAuthorRequest> requests) throws Exception {
 
             // given
@@ -126,7 +126,7 @@ class AuthorIntegrationTest extends IntegrationTest {
             var result = mockMvc.perform(get("/authors/{id}", 10_000_000L));
 
             // then
-            result.andExpect(status().isBadRequest())
+            result.andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.error_code").value(ErrorType.NOT_EXIST_DATA.getValue()));
         }
     }
@@ -167,7 +167,7 @@ class AuthorIntegrationTest extends IntegrationTest {
             );
 
             // then
-            result.andExpect(status().isBadRequest())
+            result.andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.error_code").value(ErrorType.NOT_EXIST_DATA.getValue()));
         }
 
@@ -224,7 +224,7 @@ class AuthorIntegrationTest extends IntegrationTest {
             var result = mockMvc.perform(delete("/authors/{id}", 10_000_000L));
 
             // then
-            result.andExpect(status().isBadRequest())
+            result.andExpect(status().isNotFound())
                     .andExpect(jsonPath("$.error_code").value(ErrorType.NOT_EXIST_DATA.getValue()));
         }
     }
