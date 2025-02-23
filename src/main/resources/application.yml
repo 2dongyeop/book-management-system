@@ -59,3 +59,16 @@ logging:
       max-history: 30
       file-name-pattern: "${LOG_FILE}.%d{yyyy-MM-dd}_%i"
       total-size-cap: 1GB
+
+springdoc:
+  api-docs:
+    enabled: true  # API \uBB38\uC11C \uD65C\uC131\uD654 (\uAE30\uBCF8\uAC12: true)
+  swagger-ui:
+    enabled: true  # Swagger UI \uD65C\uC131\uD654 (\uAE30\uBCF8\uAC12: true)
+    path: /swagger-ui.html  # Swagger UI \uACBD\uB85C \uBCC0\uACBD (\uAE30\uBCF8\uAC12: /swagger-ui.html)
+    operations-sorter: alpha  # API \uC815\uB82C \uAE30\uC900 (alpha: \uC54C\uD30C\uBCB3 \uC21C \uC815\uB82C)
+    tags-sorter: alpha  # \uD0DC\uADF8 \uC815\uB82C \uAE30\uC900
+    doc-expansion: list  # API \uBB38\uC11C \uAE30\uBCF8 \uD655\uC7A5 \uBC29\uC2DD (none, list, full)
+    display-request-duration: true  # \uC694\uCCAD \uC18C\uC694 \uC2DC\uAC04 \uD45C\uC2DC \uC5EC\uBD80
+  cache:
+    disabled: true  # \uCE90\uC2F1 \uBE44\uD65C\uC131\uD654 (API \uBCC0\uACBD \uC989\uC2DC \uBC18\uC601)
