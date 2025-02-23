@@ -10,6 +10,7 @@ import io.dongvelop.bookmanagementsystem.payload.request.CreateBookRequest;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateBookRequest;
 import io.dongvelop.bookmanagementsystem.repository.BookRepository;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -68,10 +69,12 @@ class BookServiceTest {
             final Book book = bookService.createBook(request);
 
             // then
-            Assertions.assertThat(book).isNotNull();
-            Assertions.assertThat(book.getTitle()).isEqualTo(request.title());
-            Assertions.assertThat(book.getIsbn()).isEqualTo(request.isbn());
-            Assertions.assertThat(book.getAuthor()).isEqualTo(author);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(book).isNotNull();
+                softly.assertThat(book.getTitle()).isEqualTo(request.title());
+                softly.assertThat(book.getIsbn()).isEqualTo(request.isbn());
+                softly.assertThat(book.getAuthor()).isEqualTo(author);
+            });
         }
 
         @AutoSource
@@ -88,8 +91,10 @@ class BookServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> bookService.createBook(request));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.EXIST_DATA);
+            });
         }
 
         @AutoSource
@@ -111,8 +116,10 @@ class BookServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> bookService.createBook(request));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            });
         }
     }
 
@@ -166,9 +173,11 @@ class BookServiceTest {
             final Book result = bookService.getBookDetails(mockedBook.getId());
 
             // then
-            Assertions.assertThat(result.getTitle()).isEqualTo(mockedBook.getTitle());
-            Assertions.assertThat(result.getIsbn()).isEqualTo(mockedBook.getIsbn());
-            Assertions.assertThat(result.getDescription()).isEqualTo(mockedBook.getDescription());
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(result.getTitle()).isEqualTo(mockedBook.getTitle());
+                softly.assertThat(result.getIsbn()).isEqualTo(mockedBook.getIsbn());
+                softly.assertThat(result.getDescription()).isEqualTo(mockedBook.getDescription());
+            });
         }
 
         @AutoSource
@@ -191,8 +200,10 @@ class BookServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> bookService.getBookDetails(mockedBook.getId()));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            });
         }
     }
 
@@ -218,9 +229,11 @@ class BookServiceTest {
             bookService.updateBook(author.getId(), request);
 
             // then
-            Assertions.assertThat(mockedBook.getTitle()).isEqualTo((request.title()));
-            Assertions.assertThat(mockedBook.getDescription()).isEqualTo((request.description()));
-            Assertions.assertThat(mockedBook.getPublicationDate()).isEqualTo((request.publicationDate()));
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(mockedBook.getTitle()).isEqualTo((request.title()));
+                softly.assertThat(mockedBook.getDescription()).isEqualTo((request.description()));
+                softly.assertThat(mockedBook.getPublicationDate()).isEqualTo((request.publicationDate()));
+            });
         }
 
         @Test
@@ -240,8 +253,10 @@ class BookServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> bookService.updateBook(notExistBookId, request));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            });
         }
 
         @AutoSource
@@ -262,9 +277,11 @@ class BookServiceTest {
             bookService.updateBook(author.getId(), request);
 
             // then
-            Assertions.assertThat(mockedBook.getTitle()).isNotEqualTo((request.title()));
-            Assertions.assertThat(mockedBook.getDescription()).isNotEqualTo((request.description()));
-            Assertions.assertThat(mockedBook.getPublicationDate()).isNotEqualTo((request.publicationDate()));
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(mockedBook.getTitle()).isNotEqualTo((request.title()));
+                softly.assertThat(mockedBook.getDescription()).isNotEqualTo((request.description()));
+                softly.assertThat(mockedBook.getPublicationDate()).isNotEqualTo((request.publicationDate()));
+            });
         }
     }
 
@@ -308,8 +325,10 @@ class BookServiceTest {
                     () -> bookService.deleteBook(notFoundBookId));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            });
         }
     }
 }

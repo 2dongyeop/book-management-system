@@ -9,6 +9,7 @@ import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
 import io.dongvelop.bookmanagementsystem.repository.AuthorRepository;
 import io.dongvelop.bookmanagementsystem.repository.BookRepository;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -71,8 +72,10 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.createAuthor(request));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.EXIST_DATA);
+            });
         }
     }
 
@@ -112,8 +115,10 @@ class AuthorServiceTest {
             final Author result = authorService.getAuthorDetail(authorId);
 
             // then
-            Assertions.assertThat(result.getEmail()).isEqualTo(Objects.requireNonNull(mockedAuthor).getEmail());
-            Assertions.assertThat(result.getName()).isEqualTo(mockedAuthor.getName());
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(result.getEmail()).isEqualTo(Objects.requireNonNull(mockedAuthor).getEmail());
+                softly.assertThat(result.getName()).isEqualTo(mockedAuthor.getName());
+            });
         }
 
         @AutoSource
@@ -128,8 +133,10 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.getAuthorDetail(authorId));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            });
         }
     }
 
@@ -164,8 +171,10 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.updateAuthor(authorId, request));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            });
         }
 
         @AutoSource
@@ -181,8 +190,10 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.updateAuthor(authorId, request));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.REQUIRED_INPUT);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.REQUIRED_INPUT);
+            });
         }
     }
 
@@ -217,8 +228,10 @@ class AuthorServiceTest {
             final APIException apiException = assertThrowsExactly(APIException.class, () -> authorService.deleteAuthor(authorId));
 
             // then
-            Assertions.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
-            Assertions.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.NOT_FOUND);
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.NOT_EXIST_DATA);
+            });
         }
     }
 }

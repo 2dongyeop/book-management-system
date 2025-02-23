@@ -4,6 +4,7 @@ import autoparams.AutoSource;
 import io.dongvelop.bookmanagementsystem.common.Const;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateBookRequest;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -62,9 +63,11 @@ class BookTest {
             book.update(request);
 
             // then
-            Assertions.assertThat(book.getTitle()).isEqualTo(request.title());
-            Assertions.assertThat(book.getDescription()).isEqualTo(request.description());
-            Assertions.assertThat(book.getPublicationDate()).isEqualTo(request.publicationDate());
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(book.getTitle()).isEqualTo(request.title());
+                softly.assertThat(book.getDescription()).isEqualTo(request.description());
+                softly.assertThat(book.getPublicationDate()).isEqualTo(request.publicationDate());
+            });
         }
 
         @Test
@@ -79,9 +82,11 @@ class BookTest {
             book.update(request);
 
             // then
-            Assertions.assertThat(book.getTitle()).isNotEqualTo(request.title());
-            Assertions.assertThat(book.getDescription()).isNotEqualTo(request.description());
-            Assertions.assertThat(book.getPublicationDate()).isNotEqualTo(request.publicationDate());
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(book.getTitle()).isNotEqualTo(request.title());
+                softly.assertThat(book.getDescription()).isNotEqualTo(request.description());
+                softly.assertThat(book.getPublicationDate()).isNotEqualTo(request.publicationDate());
+            });
         }
     }
 }

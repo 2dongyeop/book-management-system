@@ -4,6 +4,7 @@ import autoparams.AutoSource;
 import io.dongvelop.bookmanagementsystem.entity.Author;
 import io.dongvelop.bookmanagementsystem.entity.Book;
 import org.assertj.core.api.Assertions;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
@@ -75,9 +76,11 @@ class AuthorRepositoryTest {
             final List<Author> authors = authorRepository.findAuthorsWithPaging();
 
             // then
-            Assertions.assertThat(authors).hasSize(1);
-            Assertions.assertThat(authors.get(0).getName()).isEqualTo(author.getName());
-            Assertions.assertThat(authors.get(0).getBooks()).hasSize(2);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(authors).hasSize(1);
+                softly.assertThat(authors.get(0).getName()).isEqualTo(author.getName());
+                softly.assertThat(authors.get(0).getBooks()).hasSize(2);
+            });
         }
     }
 }

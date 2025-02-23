@@ -4,6 +4,7 @@ import io.dongvelop.bookmanagementsystem.entity.Author;
 import io.dongvelop.bookmanagementsystem.entity.Book;
 import io.dongvelop.bookmanagementsystem.excepiton.APIException;
 import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -11,8 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDate;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 class UtilsTest {
 
@@ -34,9 +33,11 @@ class UtilsTest {
             );
 
             // then
-            assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
-            assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(apiException.getMessage().equals("ISBN-10은 공백이거나 빈 값일 수 없습니다.")).isTrue();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getMessage().equals("ISBN-10은 공백이거나 빈 값일 수 없습니다.")).isTrue();
+            });
         }
 
         @Test
@@ -53,9 +54,11 @@ class UtilsTest {
             );
 
             // then
-            assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
-            assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(apiException.getMessage().equals("ISBN-10은 공백이거나 빈 값일 수 없습니다.")).isTrue();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getMessage().equals("ISBN-10은 공백이거나 빈 값일 수 없습니다.")).isTrue();
+            });
         }
 
         @Test
@@ -72,9 +75,11 @@ class UtilsTest {
             );
 
             // then
-            assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
-            assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(apiException.getMessage().equals("ISBN-10은 하이픈(-)을 포함해야 합니다.")).isTrue();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getMessage().equals("ISBN-10은 하이픈(-)을 포함해야 합니다.")).isTrue();
+            });
         }
 
         @Test
@@ -91,9 +96,11 @@ class UtilsTest {
             );
 
             // then
-            assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
-            assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(apiException.getMessage().equals("ISBN-10은 10자리 숫자여야 합니다.")).isTrue();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getMessage().equals("ISBN-10은 10자리 숫자여야 합니다.")).isTrue();
+            });
         }
 
         @Test
@@ -110,9 +117,11 @@ class UtilsTest {
             );
 
             // then
-            assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
-            assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(apiException.getMessage().equals("ISBN-10의 앞 세 자리는 100~900 사이여야 합니다.")).isTrue();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getMessage().equals("ISBN-10의 앞 세 자리는 100~900 사이여야 합니다.")).isTrue();
+            });
         }
 
         @Test
@@ -129,9 +138,11 @@ class UtilsTest {
             );
 
             // then
-            assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
-            assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(apiException.getMessage().equals("ISBN-10의 마지막 자리는 0이어야 합니다.")).isTrue();
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(apiException.getErrorType()).isEqualTo(ErrorType.INVALID_INPUT);
+                softly.assertThat(apiException.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(apiException.getMessage().equals("ISBN-10의 마지막 자리는 0이어야 합니다.")).isTrue();
+            });
         }
     }
 }

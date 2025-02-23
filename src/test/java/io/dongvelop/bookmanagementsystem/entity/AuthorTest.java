@@ -4,6 +4,7 @@ import autoparams.AutoSource;
 import io.dongvelop.bookmanagementsystem.excepiton.APIException;
 import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
+import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -30,8 +31,10 @@ class AuthorTest {
             final APIException exception = Assertions.assertThrows(APIException.class, () -> author.update(request));
 
             // then
-            assertThat(exception.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
-            assertThat(exception.getErrorType()).isEqualTo(ErrorType.REQUIRED_INPUT);
+            SoftAssertions.assertSoftly(softly -> {
+                softly.assertThat(exception.getHttpStatus()).isEqualTo(HttpStatus.BAD_REQUEST);
+                softly.assertThat(exception.getErrorType()).isEqualTo(ErrorType.REQUIRED_INPUT);
+            });
         }
 
         @AutoSource
