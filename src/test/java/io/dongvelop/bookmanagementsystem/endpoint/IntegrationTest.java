@@ -1,4 +1,4 @@
-package io.dongvelop.bookmanagementsystem;
+package io.dongvelop.bookmanagementsystem.endpoint;
 
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -12,5 +12,5 @@ import org.springframework.transaction.annotation.Transactional;
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @Transactional
-public class IntegrationTest {
+public abstract class IntegrationTest {
 }

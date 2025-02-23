@@ -75,6 +75,10 @@ public class Book extends BaseEntity implements Serializable {
         this.description = nullableDescription;
         this.isbn = isbn;
         this.publicationDate = nullablePublicationDate;
+        this.setAuthor(author);
+    }
+
+    private void setAuthor(Author author) {
         this.author = author;
         author.getBooks().add(this);
     }

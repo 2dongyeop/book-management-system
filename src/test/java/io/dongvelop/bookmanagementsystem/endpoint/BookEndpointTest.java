@@ -3,61 +3,60 @@ package io.dongvelop.bookmanagementsystem.endpoint;
 import autoparams.AutoSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.dongvelop.bookmanagementsystem.entity.Author;
+import io.dongvelop.bookmanagementsystem.entity.Book;
 import io.dongvelop.bookmanagementsystem.excepiton.APIException;
 import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
-import io.dongvelop.bookmanagementsystem.payload.request.CreateAuthorRequest;
-import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
-import io.dongvelop.bookmanagementsystem.repository.AuthorRepository;
-import io.dongvelop.bookmanagementsystem.service.AuthorService;
+import io.dongvelop.bookmanagementsystem.payload.request.CreateBookRequest;
+import io.dongvelop.bookmanagementsystem.payload.request.UpdateBookRequest;
+import io.dongvelop.bookmanagementsystem.service.BookService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.time.LocalDate;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@WebMvcTest(controllers = AuthorEndpoint.class)
-class AuthorEndpointTest {
+@WebMvcTest(controllers = BookEndpoint.class)
+class BookEndpointTest {
 
     @Autowired
     private MockMvc mockMvc;
     @Autowired
     private ObjectMapper objectMapper;
 
-    /*
-     * Mocking 을 위해 선언해야 하는 빈들. 아래에서 사용되니 삭제 금지.
-     */
     @MockitoBean
-    private AuthorService authorService;
-    @MockitoBean
-    private AuthorRepository authorRepository;
+    private BookService bookService;
 
     @Nested
-    @DisplayName("저자 생성 API 테스트")
-    class CreateAuthor {
+    @DisplayName("도서 생성 API 테스트")
+    class CreateBook {
+        private final CreateBookRequest request = new CreateBookRequest("title", "description", "123-456789-0", LocalDate.now(), 1L);
 
         @AutoSource
         @ParameterizedTest
-        @DisplayName("이메일이 중복되지 않았을 경우, 저자 생성에 성공한다.")
-        void success(CreateAuthorRequest request, Author author) throws Exception {
+        @DisplayName("ISBN이 중복되지 않았을 경우, 도서 생성에 성공한다.")
+        void success(Author author) throws Exception {
 
             // given
-            given(authorService.createAuthor(request)).willReturn(author);
+            given(bookService.createBook(request)).willReturn(request.toEntity(author));
 
             // when
-            var result = mockMvc.perform(post("/authors")
+            var result = mockMvc.perform(post("/books")
                     .content(objectMapper.writeValueAsString(request))
                     .contentType(MediaType.APPLICATION_JSON_VALUE));
 
@@ -65,22 +64,20 @@ class AuthorEndpointTest {
             result.andExpect(status().isCreated());
         }
 
-        @AutoSource
-        @ParameterizedTest
-        @DisplayName("이메일이 중복되었을 경우, 저자 생성에 실패한다.")
-        void fail(CreateAuthorRequest request) throws Exception {
+        @Test
+        @DisplayName("ISBN이 중복되지 않았을 경우, 도서 생성에 실패한다.")
+        void fail() throws Exception {
 
             // given
-            given(authorService.createAuthor(request)).willThrow(
+            given(bookService.createBook(request)).willThrow(
                     new APIException(
                             HttpStatus.BAD_REQUEST,
-                            ErrorType.EXIST_DATA,
-                            request.email()
+                            ErrorType.EXIST_DATA
                     )
             );
 
             // when
-            var result = mockMvc.perform(post("/authors")
+            var result = mockMvc.perform(post("/books")
                     .content(objectMapper.writeValueAsString(request))
                     .contentType(MediaType.APPLICATION_JSON_VALUE));
 
@@ -91,19 +88,23 @@ class AuthorEndpointTest {
     }
 
     @Nested
-    @DisplayName("저자 목록 조회 API 테스트")
-    class GetAuthorList {
+    @DisplayName("도서 목록 조회 API 테스트")
+    class GetBookList {
 
         @AutoSource
         @ParameterizedTest
-        @DisplayName("저자 목록을 조회한다.")
-        void success(List<Author> responses) throws Exception {
+        @DisplayName("도서 목록을 조회한다.")
+        void success(Author author) throws Exception {
 
             // given
-            given(authorService.getAuthorList()).willReturn(responses);
+            final CreateBookRequest request1 = new CreateBookRequest("title", "description", "123-456789-0", LocalDate.now(), author.getId());
+            final CreateBookRequest request2 = new CreateBookRequest("title", "description", "223-456789-0", LocalDate.now(), author.getId());
+
+            final PageImpl<Book> response = new PageImpl<>(List.of(request1.toEntity(author), request2.toEntity(author)));
+            given(bookService.getBookList(any())).willReturn(response);
 
             // when
-            var result = mockMvc.perform(get("/authors"));
+            var result = mockMvc.perform(get("/books"));
 
             // then
             result.andExpect(status().isOk());
@@ -111,31 +112,34 @@ class AuthorEndpointTest {
     }
 
     @Nested
-    @DisplayName("저자 상세 조회 API 테스트")
-    class getAuthorDetail {
+    @DisplayName("도서 상세 조회 API 테스트")
+    class getBookDetail {
 
         @AutoSource
         @ParameterizedTest
-        @DisplayName("저자 아이디가 유효할 경우, 상세 조회에 성공한다.")
-        void success(Long authorId, Author response) throws Exception {
+        @DisplayName("도서 아이디가 유효할 경우, 상세 조회에 성공한다.")
+        void success(Long bookId, Author author) throws Exception {
 
             // given
-            given(authorService.getAuthorDetail(authorId)).willReturn(response);
+            final CreateBookRequest request1 = new CreateBookRequest("title", "description", "123-456789-0", LocalDate.now(), author.getId());
+            final Book mockedBook = request1.toEntity(author);
+
+            given(bookService.getBookDetails(bookId)).willReturn(mockedBook);
 
             // when
-            var result = mockMvc.perform(get("/authors/{id}", authorId));
+            var result = mockMvc.perform(get("/books/{id}", bookId));
 
             // then
             result.andExpect(status().isOk());
         }
 
-        @Test
-        @DisplayName("저자 아이디가 유효하지 않을 경우, 상세 조회에 실패한다.")
-        void fail() throws Exception {
+        @AutoSource
+        @ParameterizedTest
+        @DisplayName("도서 아이디가 유효하지 않을 경우, 상세 조회에 실패한다.")
+        void fail(Long bookId) throws Exception {
 
             // given
-            final Long notExistAuthorId = 10_000_000L;
-            given(authorService.getAuthorDetail(notExistAuthorId)).willThrow(
+            given(bookService.getBookDetails(bookId)).willThrow(
                     new APIException(
                             HttpStatus.NOT_FOUND,
                             ErrorType.NOT_EXIST_DATA
@@ -143,7 +147,7 @@ class AuthorEndpointTest {
             );
 
             // when
-            var result = mockMvc.perform(get("/authors/{id}", notExistAuthorId));
+            var result = mockMvc.perform(get("/books/{id}", bookId));
 
             // then
             result.andExpect(status().isNotFound())
@@ -152,23 +156,24 @@ class AuthorEndpointTest {
     }
 
     @Nested
-    @DisplayName("저자 수정 API 테스트")
-    class UpdateAuthor {
+    @DisplayName("도서 수정 API 테스트")
+    class UpdateBook {
 
         @AutoSource
         @ParameterizedTest
-        @DisplayName("저자 아이디가 유효하지 않을 경우, 저자 수정에 실패한다.")
-        void fail1(UpdateAuthorRequest request) throws Exception {
+        @DisplayName("도서 아이디가 유효하지 않을 경우, 수정에 실패한다.")
+        void fail1(Long bookId) throws Exception {
 
             // given
-            final Long notExistAuthorId = 10_000_000L;
+            final UpdateBookRequest request = new UpdateBookRequest("title", "description", null);
+
             doThrow(new APIException(
                     HttpStatus.NOT_FOUND,
                     ErrorType.NOT_EXIST_DATA
-            )).when(authorService).updateAuthor(notExistAuthorId, request);
+            )).when(bookService).updateBook(bookId, request);
 
             // when
-            var result = mockMvc.perform(patch("/authors/{id}", notExistAuthorId)
+            var result = mockMvc.perform(patch("/books/{id}", bookId)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(request))
             );
@@ -180,22 +185,22 @@ class AuthorEndpointTest {
     }
 
     @Nested
-    @DisplayName("저자 삭제 API 테스트")
+    @DisplayName("도서 삭제 API 테스트")
     class DeleteAuthor {
 
-        @Test
-        @DisplayName("저자 아이디가 유효하지 않을 경우, 저자 삭제에 실패한다.")
-        void fail1() throws Exception {
+        @AutoSource
+        @ParameterizedTest
+        @DisplayName("도서 아이디가 유효하지 않을 경우, 삭제에 실패한다.")
+        void fail1(Long bookId) throws Exception {
 
             // given
-            final Long notExistAuthorId = 10_000_000L;
             doThrow(new APIException(
                     HttpStatus.NOT_FOUND,
                     ErrorType.NOT_EXIST_DATA
-            )).when(authorService).deleteAuthor(notExistAuthorId);
+            )).when(bookService).deleteBook(bookId);
 
             // when
-            var result = mockMvc.perform(delete("/authors/{id}", notExistAuthorId));
+            var result = mockMvc.perform(delete("/books/{id}", bookId));
 
             // then
             result.andExpect(status().isNotFound())

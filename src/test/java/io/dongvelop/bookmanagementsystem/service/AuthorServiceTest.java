@@ -21,6 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.HttpStatus;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
@@ -36,7 +37,7 @@ class AuthorServiceTest {
     @Mock
     private AuthorRepository authorRepository;
     @Mock
-    private BookRepository bookRepository;
+    private BookRepository bookRepository; // 저자 삭제 테스트에서 모킹을 위해 선언. 삭제 금지
 
     @Nested
     @DisplayName("저자 생성 테스트")
@@ -52,10 +53,10 @@ class AuthorServiceTest {
             given(authorRepository.save(any(Author.class))).willReturn(new Author("name", "email@example.com"));
 
             // when
-            final Author author = authorService.createAuthor(request);
+            final Author result = authorService.createAuthor(request);
 
             // then
-            Assertions.assertThat(author).isNotNull();
+            Assertions.assertThat(result).isNotNull();
         }
 
         @AutoSource
@@ -82,16 +83,16 @@ class AuthorServiceTest {
         @AutoSource
         @ParameterizedTest
         @DisplayName("저자 목록 조회에 성공한다.")
-        void fail(List<Author> authors) {
+        void success(List<Author> mockedAuthors) {
 
             // given
-            given(authorRepository.findAuthorsWithPaging()).willReturn(authors);
+            given(authorRepository.findAuthorsWithPaging()).willReturn(mockedAuthors);
 
             // when
             final List<Author> result = authorService.getAuthorList();
 
             // then
-            Assertions.assertThat(result.size()).isEqualTo(authors.size());
+            Assertions.assertThat(result.size()).isEqualTo(mockedAuthors.size());
         }
     }
 
@@ -102,17 +103,17 @@ class AuthorServiceTest {
         @AutoSource
         @ParameterizedTest
         @DisplayName("저자 아이디가 유효할 경우, 저자 상세 조회에 성공한다.")
-        void success(Author author, Long authorId) throws APIException {
+        void success(Author mockedAuthor, Long authorId) throws APIException {
 
             // given
-            given(authorRepository.findById(authorId)).willReturn(Optional.ofNullable(author));
+            given(authorRepository.findById(authorId)).willReturn(Optional.ofNullable(mockedAuthor));
 
             // when
             final Author result = authorService.getAuthorDetail(authorId);
 
             // then
-            Assertions.assertThat(result.getEmail()).isEqualTo(author.getEmail());
-            Assertions.assertThat(result.getName()).isEqualTo(author.getName());
+            Assertions.assertThat(result.getEmail()).isEqualTo(Objects.requireNonNull(mockedAuthor).getEmail());
+            Assertions.assertThat(result.getName()).isEqualTo(mockedAuthor.getName());
         }
 
         @AutoSource
@@ -148,7 +149,7 @@ class AuthorServiceTest {
             authorService.updateAuthor(authorId, request);
 
             // then
-            Assertions.assertThat(author.getName()).isEqualTo(request.name());
+            Assertions.assertThat(Objects.requireNonNull(author).getName()).isEqualTo(request.name());
         }
 
         @AutoSource

@@ -2,7 +2,6 @@ package io.dongvelop.bookmanagementsystem.endpoint;
 
 import autoparams.AutoSource;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.dongvelop.bookmanagementsystem.IntegrationTest;
 import io.dongvelop.bookmanagementsystem.entity.Author;
 import io.dongvelop.bookmanagementsystem.excepiton.APIException;
 import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
@@ -121,9 +120,10 @@ class AuthorIntegrationTest extends IntegrationTest {
         void fail() throws Exception {
 
             // given
+            final Long notExistAuthorId = 10_000_000L;
 
             // when
-            var result = mockMvc.perform(get("/authors/{id}", 10_000_000L));
+            var result = mockMvc.perform(get("/authors/{id}", notExistAuthorId));
 
             // then
             result.andExpect(status().isNotFound())
@@ -141,7 +141,7 @@ class AuthorIntegrationTest extends IntegrationTest {
         void fail1(CreateAuthorRequest createAuthorRequest, UpdateAuthorRequest updateAuthorRequest) throws Exception {
 
             // given
-            Author author = authorService.createAuthor(createAuthorRequest);
+            final Author author = authorService.createAuthor(createAuthorRequest);
 
             // when
             var result = mockMvc.perform(patch("/authors/{id}", author.getId())
@@ -159,9 +159,10 @@ class AuthorIntegrationTest extends IntegrationTest {
         void fail1(UpdateAuthorRequest request) throws Exception {
 
             // given
+            final Long notExistAuthorId = 10_000_000L;
 
             // when
-            var result = mockMvc.perform(patch("/authors/{id}", 10_000_000L)
+            var result = mockMvc.perform(patch("/authors/{id}", notExistAuthorId)
                     .contentType(MediaType.APPLICATION_JSON_VALUE)
                     .content(objectMapper.writeValueAsString(request))
             );
@@ -178,7 +179,7 @@ class AuthorIntegrationTest extends IntegrationTest {
 
             // given
             final CreateAuthorRequest createAuthorRequest = new CreateAuthorRequest("name", "example@email.com");
-            Author author = authorService.createAuthor(createAuthorRequest);
+            final Author author = authorService.createAuthor(createAuthorRequest);
 
             final UpdateAuthorRequest request = new UpdateAuthorRequest("");
 
@@ -204,7 +205,7 @@ class AuthorIntegrationTest extends IntegrationTest {
         void success(CreateAuthorRequest request) throws Exception {
 
             // given
-            Author author = authorService.createAuthor(request);
+            final Author author = authorService.createAuthor(request);
 
             // when
             var result = mockMvc.perform(delete("/authors/{id}", author.getId()));
@@ -219,9 +220,10 @@ class AuthorIntegrationTest extends IntegrationTest {
         void fail1() throws Exception {
 
             // given
+            final Long notExistAuthorId = 10_000_000L;
 
             // when
-            var result = mockMvc.perform(delete("/authors/{id}", 10_000_000L));
+            var result = mockMvc.perform(delete("/authors/{id}", notExistAuthorId));
 
             // then
             result.andExpect(status().isNotFound())
