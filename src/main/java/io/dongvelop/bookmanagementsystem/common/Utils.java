@@ -83,7 +83,6 @@ public final class Utils {
      * @return String 다국어 메시지
      */
     public static String getLocaleMessage(final MessageSource messageSource, final String code, final String[] messages, final Locale locale) {
-
         String retValue;
 
         try {

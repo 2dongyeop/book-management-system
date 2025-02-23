@@ -1,5 +1,6 @@
 package io.dongvelop.bookmanagementsystem.entity;
 
+import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -46,8 +47,12 @@ public class Author implements Serializable {
     @OneToMany(mappedBy = "author")
     private final List<Book> books = new ArrayList<>();
 
-    public Author(String name, String email) {
+    public Author(final String name, final String email) {
         this.name = name;
         this.email = email;
+    }
+
+    public void update(final UpdateAuthorRequest request) {
+        this.name = request.name();
     }
 }

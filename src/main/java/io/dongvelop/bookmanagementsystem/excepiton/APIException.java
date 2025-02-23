@@ -45,4 +45,16 @@ public class APIException extends Exception {
         super(message, cause);
         this.httpStatus = httpStatus;
     }
+
+
+    public APIException(HttpStatus httpStatus, ErrorType errorType, String message, Throwable cause) {
+        super(message, cause);
+        this.httpStatus = httpStatus;
+        this.errorType = errorType;
+    }
+
+    public APIException(HttpStatus httpStatus, Throwable cause) {
+        super(cause);
+        this.httpStatus = httpStatus;
+    }
 }

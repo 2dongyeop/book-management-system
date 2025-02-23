@@ -31,6 +31,14 @@ spring:
       enabled: true # h2 console \uD65C\uC131\uD654 \uC5EC\uBD80. \uAE30\uBCF8 \uAC12: false
       path: /h2     # h2 console \uC811\uC18D \uACBD\uB85C. \uAE30\uBCF8 \uAC12 : /h2-console
 
+  # i18n : \uB2E4\uAD6D\uC5B4 \uCC98\uB9AC\uB97C \uC704\uD55C \uBA54\uC2DC\uC9C0 \uAD6D\uC81C\uD654
+  messages:
+    basename: i18n/error # error.properties \uC9C0\uC815
+    encoding: UTF-8
+
+  web:
+    locale: ko_KR # \uB2E4\uAD6D\uC5B4 \uCC98\uB9AC\uB97C \uC704\uD55C \uB85C\uCF00\uC77C \uC9C0\uC815. [ ko_KR , en_US ]
+
 # LOG
 logging:
   pattern:

@@ -1,5 +1,6 @@
 package io.dongvelop.bookmanagementsystem.excepiton;
 
+import io.dongvelop.bookmanagementsystem.common.Const;
 import io.dongvelop.bookmanagementsystem.common.Utils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,8 +8,11 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.util.Locale;
 
@@ -22,7 +26,7 @@ import java.util.Locale;
 @RequiredArgsConstructor
 public class GlobalExceptionHandler {
 
-    @Value("${spring.mvc.locale:ko_KR}")
+    @Value("${spring.web.locale:ko_KR}")
     private Locale locale;
 
     private final MessageSource messageSource;
@@ -31,9 +35,25 @@ public class GlobalExceptionHandler {
      * Checked Exception 처리
      */
     @ExceptionHandler(value = APIException.class)
-    public ResponseEntity<?> exceptionAPI(APIException e) {
+    public ResponseEntity<?> apiException(APIException e) {
         log.warn(e.getMessage(), e);
         return getExceptionResponse(e.getErrorType(), e.getMessage(), e.getHttpStatus());
+    }
+
+    /**
+     * RequestParam 및 PathParam 에서 선언한 매개변수의 타입과 불일치시 발생하는 예외
+     */
+    @ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+    public ResponseEntity<?> methodArgumentTypeMismatchException(MethodArgumentTypeMismatchException e) {
+        return getExceptionResponse(ErrorType.INVALID_INPUT, getCauseMessage(e.getCause()), HttpStatus.BAD_REQUEST);
+    }
+
+    /**
+     * `@Valid` 등으로 검사된 `@NotBlank` 등과 같이 유효성 검사에 실패한 경우.
+     */
+    @ExceptionHandler(value = MethodArgumentNotValidException.class)
+    public ResponseEntity<?> methodArgumentNotValid(MethodArgumentNotValidException e) {
+        return getExceptionResponse(ErrorType.INVALID_INPUT, getCauseDetailMessages(e), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -54,5 +74,29 @@ public class GlobalExceptionHandler {
 
         final ErrorResponse response = new ErrorResponse(errorType.getValue(), Utils.getLocaleMessage(messageSource, errorType.getValue(), message, locale));
         return new ResponseEntity<>(response, status);
+    }
+
+    private String getCauseMessage(final Throwable throwable) {
+        String retValue = Const.STRING_EMPTY;
+
+        if (throwable != null) {
+            final Throwable childThrow = throwable.getCause();
+
+            if (childThrow != null) {
+                retValue = getCauseMessage(childThrow);
+            } else {
+                retValue = throwable.getMessage();
+            }
+        }
+
+        return retValue;
+    }
+
+    private String getCauseDetailMessages(final BindException exception) {
+        return exception.getBindingResult()
+                .getFieldErrors()
+                .stream()
+                .map(fieldError -> fieldError.getField() + " : " + fieldError.getDefaultMessage())
+                .toList().toString();
     }
 }
