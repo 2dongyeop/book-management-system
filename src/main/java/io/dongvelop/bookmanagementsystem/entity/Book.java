@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Getter
 @Table(name = "book")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Book implements Serializable {
+public class Book extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = -7890108862165975032L;

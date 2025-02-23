@@ -6,9 +6,9 @@ import io.dongvelop.bookmanagementsystem.excepiton.APIException;
 import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
 import io.dongvelop.bookmanagementsystem.payload.request.CreateAuthorRequest;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
-import io.dongvelop.bookmanagementsystem.payload.response.CreateAuthorResponse;
 import io.dongvelop.bookmanagementsystem.repository.AuthorRepository;
 import io.dongvelop.bookmanagementsystem.repository.BookRepository;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.PageRequest;
@@ -37,14 +37,14 @@ public class AuthorService {
      * 저자 생성 메서드
      */
     @Transactional
-    public CreateAuthorResponse createAuthor(final CreateAuthorRequest request) throws APIException {
+    public Author createAuthor(final CreateAuthorRequest request) throws APIException {
         log.debug("request[{}]", request);
 
         if (isAlreadyExistEmail(request.email())) {
             throw new APIException(HttpStatus.BAD_REQUEST, ErrorType.EXIST_DATA, request.email());
         }
 
-        return new CreateAuthorResponse(authorRepository.save(request.toEntity()).getId());
+        return authorRepository.save(request.toEntity());
     }
 
     /**
@@ -80,7 +80,7 @@ public class AuthorService {
      * @param request  수정할 정보
      */
     @Transactional
-    public void updateAuthor(final Long authorId, final UpdateAuthorRequest request) throws APIException {
+    public void updateAuthor(final Long authorId, @Valid final UpdateAuthorRequest request) throws APIException {
         log.debug("authorId[{}], request[{}]", authorId, request);
 
         final Author author = getAuthorDetail(authorId);

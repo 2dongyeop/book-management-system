@@ -39,7 +39,10 @@ public class AuthorEndpoint implements AuthAPISpec {
     public ResponseEntity<CreateAuthorResponse> createAuthor(@RequestBody @Valid final CreateAuthorRequest request) throws APIException {
         log.info("request[{}]", request);
 
-        return new ResponseEntity<>(authorService.createAuthor(request), HttpStatus.CREATED);
+        return new ResponseEntity<>(
+                new CreateAuthorResponse(authorService.createAuthor(request).getId()),
+                HttpStatus.CREATED
+        );
     }
 
     /**

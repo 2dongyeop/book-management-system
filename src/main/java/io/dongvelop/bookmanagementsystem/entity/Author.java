@@ -1,10 +1,14 @@
 package io.dongvelop.bookmanagementsystem.entity;
 
+import io.dongvelop.bookmanagementsystem.excepiton.APIException;
+import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.util.StringUtils;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -20,7 +24,7 @@ import java.util.List;
 @Getter
 @Table(name = "author")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Author implements Serializable {
+public class Author extends BaseEntity implements Serializable {
 
     @Serial
     private static final long serialVersionUID = 7107027513806946728L;
@@ -52,7 +56,10 @@ public class Author implements Serializable {
         this.email = email;
     }
 
-    public void update(final UpdateAuthorRequest request) {
+    public void update(final UpdateAuthorRequest request) throws APIException {
+        if (!StringUtils.hasText(request.name())) {
+            throw new APIException(HttpStatus.BAD_REQUEST, ErrorType.REQUIRED_INPUT, "name[" + request.name() + "] is required.");
+        }
         this.name = request.name();
     }
 }
