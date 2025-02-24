@@ -5,17 +5,17 @@ JDBC_BIND_LOG_LEVEL: TRACE
 spring:
   datasource:
     url: jdbc:h2:mem:testdb
-    username: sa
-    password:
+    username: code
+    password: code
     driver-class-name: org.h2.Driver
-    hikari: # DB Connection Pool \uC124\uC815. \uD604\uC7AC \uC9C0\uC815\uD55C \uAC12\uB4E4\uC740 \uBAA8\uB450 \uAE30\uBCF8 \uAC12\uC5D0 \uD574\uB2F9.
-      connection-timeout: 30000 # - \uD0C0\uC784\uC544\uC6C3 \uAC12
-      validation-timeout: 5000  # - \uC720\uD6A8\uD55C \uD0C0\uC784\uC544\uC6C3
-      minimum-idle: 10          # - \uC720\uD734 \uCEE4\uB125\uC158 \uC218 (default: 10)
-      max-lifetime: 1800000     # - \uCEE4\uB125\uC158\uC758 \uCD5C\uB300 \uC218\uBA85
-      maximum-pool-size: 10     # - \uCD5C\uB300 \uD480 \uC0AC\uC774\uC988 (default: 10)
-      idle-timeout: 600000      # - \uC5F0\uACB0\uC744 \uC704\uD55C \uCD5C\uB300 \uC720\uD734 \uC2DC\uAC04
-      auto-commit: true         # - auto commit \uC5EC\uBD80
+    hikari:                     # DB Connection Pool 설정. 현재 지정한 값들은 모두 기본 값에 해당.
+      connection-timeout: 30000 # - 타임아웃 값
+      validation-timeout: 5000  # - 유효한 타임아웃
+      minimum-idle: 10          # - 유휴 커넥션 수
+      max-lifetime: 1800000     # - 커넥션의 최대 수명
+      maximum-pool-size: 10     # - 최대 풀 사이즈
+      idle-timeout: 600000      # - 연결을 위한 최대 유휴 시간
+      auto-commit: true         # - auto commit 여부
 
   jpa:
     hibernate:
@@ -28,16 +28,16 @@ spring:
 
   h2:
     console:
-      enabled: true # h2 console \uD65C\uC131\uD654 \uC5EC\uBD80. \uAE30\uBCF8 \uAC12: false
-      path: /h2     # h2 console \uC811\uC18D \uACBD\uB85C. \uAE30\uBCF8 \uAC12 : /h2-console
+      enabled: true # h2 console 활성화 여부. 기본 값: false
+      path: /h2     # h2 console 접속 경로. 기본 값 : /h2-console
 
-  # i18n : \uB2E4\uAD6D\uC5B4 \uCC98\uB9AC\uB97C \uC704\uD55C \uBA54\uC2DC\uC9C0 \uAD6D\uC81C\uD654
+  # i18n : 다국어 처리를 위한 메시지 국제화
   messages:
-    basename: i18n/error # error.properties \uC9C0\uC815
+    basename: i18n/error # error.properties 지정
     encoding: UTF-8
 
   web:
-    locale: ko_KR # \uB2E4\uAD6D\uC5B4 \uCC98\uB9AC\uB97C \uC704\uD55C \uB85C\uCF00\uC77C \uC9C0\uC815. [ ko_KR , en_US ]
+    locale: ko_KR # 다국어 처리를 위한 로케일 지정. [ ko_KR , en_US ]
 
 # LOG
 logging:
@@ -62,13 +62,13 @@ logging:
 
 springdoc:
   api-docs:
-    enabled: true  # API \uBB38\uC11C \uD65C\uC131\uD654 (\uAE30\uBCF8\uAC12: true)
+    enabled: true  # API 문서 활성화 (기본값: true)
   swagger-ui:
-    enabled: true  # Swagger UI \uD65C\uC131\uD654 (\uAE30\uBCF8\uAC12: true)
-    path: /swagger-ui.html  # Swagger UI \uACBD\uB85C \uBCC0\uACBD (\uAE30\uBCF8\uAC12: /swagger-ui.html)
-    operations-sorter: alpha  # API \uC815\uB82C \uAE30\uC900 (alpha: \uC54C\uD30C\uBCB3 \uC21C \uC815\uB82C)
-    tags-sorter: alpha  # \uD0DC\uADF8 \uC815\uB82C \uAE30\uC900
-    doc-expansion: list  # API \uBB38\uC11C \uAE30\uBCF8 \uD655\uC7A5 \uBC29\uC2DD (none, list, full)
-    display-request-duration: true  # \uC694\uCCAD \uC18C\uC694 \uC2DC\uAC04 \uD45C\uC2DC \uC5EC\uBD80
+    enabled: true  # Swagger UI 활성화 (기본값: true)
+    path: /swagger-ui.html  # Swagger UI 경로 변경 (기본값: /swagger-ui.html)
+    operations-sorter: alpha  # API 정렬 기준 (alpha: 알파벳 순 정렬)
+    tags-sorter: alpha  # 태그 정렬 기준
+    doc-expansion: list  # API 문서 기본 확장 방식 (none, list, full)
+    display-request-duration: true  # 요청 소요 시간 표시 여부
   cache:
-    disabled: true  # \uCE90\uC2F1 \uBE44\uD65C\uC131\uD654 (API \uBCC0\uACBD \uC989\uC2DC \uBC18\uC601)
+    disabled: true  # 캐싱 비활성화 (API 변경 즉시 반영)

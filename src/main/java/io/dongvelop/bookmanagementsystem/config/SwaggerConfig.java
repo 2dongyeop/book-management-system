@@ -21,7 +21,7 @@ public class SwaggerConfig {
                 .components(new Components())
                 .info(new Info()
                         .title("도서관리 시스템 API Docs")
-                        .description("코드 기술과제")
+                        .description("코드 기술과제입니다. 각 에러 케이스 별 상태코드로 세분화하여 응답을 제공합니다.")
                         .version("1.0.0")
                         .contact(new Contact()
                                 .name("Lee Dongyeop")
