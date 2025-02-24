@@ -39,8 +39,6 @@ public class AuthorEndpoint implements AuthAPISpec {
     @Override
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<CreateAuthorResponse> createAuthor(@RequestBody @Valid final CreateAuthorRequest request) throws APIException {
-        log.info("request[{}]", request);
-
         return new ResponseEntity<>(
                 new CreateAuthorResponse(authorService.createAuthor(request).getId()),
                 HttpStatus.CREATED
@@ -71,8 +69,6 @@ public class AuthorEndpoint implements AuthAPISpec {
     @Override
     @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<AuthorDetailResponse> getAuthorDetail(@PathVariable final Long id) throws APIException {
-        log.info("id[{}]", id);
-
         return ResponseEntity.ok(AuthorDetailResponse.of(authorService.getAuthorDetail(id)));
     }
 
@@ -85,8 +81,6 @@ public class AuthorEndpoint implements AuthAPISpec {
     @Override
     @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateAuthor(@PathVariable final Long id, @RequestBody @Valid final UpdateAuthorRequest request) throws APIException {
-        log.info("id[{}], request[{}]", id, request);
-
         authorService.updateAuthor(id, request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -99,8 +93,6 @@ public class AuthorEndpoint implements AuthAPISpec {
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteAuthor(@PathVariable final Long id) throws APIException {
-        log.info("id[{}]", id);
-
         authorService.deleteAuthor(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

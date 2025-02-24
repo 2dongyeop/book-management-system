@@ -40,8 +40,6 @@ public class BookEndpoint implements BookAPISpec {
     @Override
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> createBook(@RequestBody @Valid final CreateBookRequest request) throws APIException {
-        log.info("request[{}]", request);
-
         return new ResponseEntity<>(
                 new CreateBookResponse(bookService.createBook(request).getId()),
                 HttpStatus.CREATED
@@ -62,7 +60,6 @@ public class BookEndpoint implements BookAPISpec {
             @RequestParam(required = false, defaultValue = "id") final String sort,
             @RequestParam(required = false, defaultValue = "") final String title
     ) {
-        log.info("page[{}], size[{}], sort[{}]", page, size, sort);
         final PageRequest pageRequest = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, sort));
 
         return ResponseEntity.ok(bookService.getBookList(pageRequest, title).map(BookListResponse::of));
@@ -76,8 +73,6 @@ public class BookEndpoint implements BookAPISpec {
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<BookDetailResponse> getBookDetails(@PathVariable final Long id) throws APIException {
-        log.info("id[{}]", id);
-
         return ResponseEntity.ok(BookDetailResponse.of(bookService.getBookDetails(id)));
     }
 
@@ -90,8 +85,6 @@ public class BookEndpoint implements BookAPISpec {
     @Override
     @PatchMapping("/{id}")
     public ResponseEntity<?> updateBook(@PathVariable final Long id, @RequestBody @Valid final UpdateBookRequest request) throws APIException {
-        log.info("id[{}], request[{}]", id, request);
-
         bookService.updateBook(id, request);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
@@ -104,8 +97,6 @@ public class BookEndpoint implements BookAPISpec {
     @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable final Long id) throws APIException {
-        log.info("id[{}]", id);
-
         bookService.deleteBook(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
