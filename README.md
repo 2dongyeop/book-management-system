@@ -15,16 +15,12 @@
 - [**테스트 코드 작성 규칙**](#테스트-코드-작성-규칙)
 - [프로젝트 구조](#프로젝트-구조)
 
-### 소개
-
-- 테스트 코드 (Autoparams) 컨벤션. 문서 작성해야됨...
-
 <br/>
 
 ### 기술 스택 및 개발 환경
 
 - OpenJDK 17, Spring Boot 3.4.3, Gradle 8.12.1, H2 Database 2.3.232
-- macOS Sequoia (Apple M1), CPU - Apple M1 (7-core), RAM - 16GB
+- OS: macOS Sequoia (Apple M1), CPU: Apple M1 (7-core), RAM: 16GB
 
 <br/>
 
@@ -87,19 +83,19 @@ $ java -jar book-management-system-1.0.0.jar
 
 ### 테스트 코드 작성 규칙
 
-- BDD 기반으로 테스트 흐름은 `given-when-then` 순으로 구성
-    - Given 절에서 필요한 테스트 셋은 [Autoparams(오픈소스)](https://github.com/AutoParams/AutoParams)를 이용해 주입받는다.
+- BDD 기반으로 테스트 흐름은 `given-when-then` 순으로 작성합니다..
+    - Given 절에서 필요한 테스트 셋은 [Autoparams(오픈소스)](https://github.com/AutoParams/AutoParams)를 이용해 주입받도록 합니다.
 - 단위 테스트 작성 대상
     - JPA Entity 내 비즈니스 로직, 유틸성 클래스
-    - Controller 내 모든 API : `@WebMvcTest` 이용
-    - Service 내 public 메서드 전부 : `@ExtendWith(MockitoExtension.class)` 이용
+    - Controller 내 모든 API : `@WebMvcTest`
+    - Service 내 public 메서드 전부 : `@ExtendWith(MockitoExtension.class)`
 - 통합 테스트 작성 대상
-    - Repository 내 직접 작성한 쿼리 전부 : `@DataJpaTest` 이용
-    - Controller 내 모든 API : `@SpringBootTest` 이용
-        - 이때, 매번 새로운 Spring 컨텍스트를 새로 로딩하지 않고 재사용하도록 하기
+    - Repository 내 직접 작성한 쿼리 전부 : `@DataJpaTest`
+    - Controller 내 모든 API : `@SpringBootTest`
+        - 각 Controller 통합 테스트별로 매번 새로운 Spring 컨텍스트를 새로 로딩하지 않고 재사용하도록 하기
           위해 [Abstract Integration Test](https://github.com/2dongyeop/book-management-system/blob/main/src/test/java/io/dongvelop/bookmanagementsystem/endpoint/IntegrationTest.java)
-          를 상속받아 작성한다.
-- 모든 테스트는 성공/실패 케이스를 작성하며, 동일 분류를 `@Nested`를 이용해 그룹핑한다.
+          를 상속받아 작성합니다.
+- 모든 테스트는 `@Nested`를 이용해 그룹핑하여 성공/실패 케이스를 작성합니다.
   ![test-01.png](docs/images/test-01.png)
 
 <br/>
