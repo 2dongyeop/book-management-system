@@ -3,7 +3,7 @@ package io.dongvelop.bookmanagementsystem.repository;
 import autoparams.AutoSource;
 import io.dongvelop.bookmanagementsystem.entity.Author;
 import io.dongvelop.bookmanagementsystem.entity.Book;
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;

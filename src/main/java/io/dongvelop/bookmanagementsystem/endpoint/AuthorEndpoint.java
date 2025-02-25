@@ -1,7 +1,7 @@
 package io.dongvelop.bookmanagementsystem.endpoint;
 
 import io.dongvelop.bookmanagementsystem.endpoint.spec.AuthAPISpec;
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
 import io.dongvelop.bookmanagementsystem.payload.request.CreateAuthorRequest;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
 import io.dongvelop.bookmanagementsystem.payload.response.AuthorDetailResponse;

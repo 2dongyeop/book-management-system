@@ -2,7 +2,7 @@ package io.dongvelop.bookmanagementsystem.entity;
 
 import io.dongvelop.bookmanagementsystem.common.Const;
 import io.dongvelop.bookmanagementsystem.common.Utils;
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateBookRequest;
 import jakarta.persistence.*;
 import lombok.AccessLevel;

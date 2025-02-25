@@ -1,6 +1,6 @@
 package io.dongvelop.bookmanagementsystem.endpoint.spec;
 
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
 import io.dongvelop.bookmanagementsystem.payload.request.CreateBookRequest;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateBookRequest;
 import io.swagger.v3.oas.annotations.Operation;

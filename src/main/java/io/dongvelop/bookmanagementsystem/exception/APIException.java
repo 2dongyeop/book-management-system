@@ -1,4 +1,4 @@
-package io.dongvelop.bookmanagementsystem.excepiton;
+package io.dongvelop.bookmanagementsystem.exception;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;

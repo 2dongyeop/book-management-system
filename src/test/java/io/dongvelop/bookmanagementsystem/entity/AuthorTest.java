@@ -1,8 +1,8 @@
 package io.dongvelop.bookmanagementsystem.entity;
 
 import autoparams.AutoSource;
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
-import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
+import io.dongvelop.bookmanagementsystem.exception.ErrorType;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;

@@ -5,7 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import io.dongvelop.bookmanagementsystem.common.ValidISBN10;
 import io.dongvelop.bookmanagementsystem.entity.Author;
 import io.dongvelop.bookmanagementsystem.entity.Book;
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
 import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.PastOrPresent;

@@ -1,4 +1,4 @@
-package io.dongvelop.bookmanagementsystem.excepiton;
+package io.dongvelop.bookmanagementsystem.exception;
 
 import io.dongvelop.bookmanagementsystem.common.Const;
 import io.dongvelop.bookmanagementsystem.common.Utils;

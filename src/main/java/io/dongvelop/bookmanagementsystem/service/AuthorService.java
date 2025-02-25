@@ -2,8 +2,8 @@ package io.dongvelop.bookmanagementsystem.service;
 
 import io.dongvelop.bookmanagementsystem.entity.Author;
 import io.dongvelop.bookmanagementsystem.entity.Book;
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
-import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
+import io.dongvelop.bookmanagementsystem.exception.ErrorType;
 import io.dongvelop.bookmanagementsystem.payload.request.CreateAuthorRequest;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
 import io.dongvelop.bookmanagementsystem.repository.AuthorRepository;

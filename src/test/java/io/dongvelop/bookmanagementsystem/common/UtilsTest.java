@@ -2,8 +2,8 @@ package io.dongvelop.bookmanagementsystem.common;
 
 import io.dongvelop.bookmanagementsystem.entity.Author;
 import io.dongvelop.bookmanagementsystem.entity.Book;
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
-import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
+import io.dongvelop.bookmanagementsystem.exception.ErrorType;
 import org.assertj.core.api.SoftAssertions;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;

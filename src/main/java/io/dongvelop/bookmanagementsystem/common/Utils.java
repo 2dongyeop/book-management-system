@@ -1,7 +1,7 @@
 package io.dongvelop.bookmanagementsystem.common;
 
-import io.dongvelop.bookmanagementsystem.excepiton.APIException;
-import io.dongvelop.bookmanagementsystem.excepiton.ErrorType;
+import io.dongvelop.bookmanagementsystem.exception.APIException;
+import io.dongvelop.bookmanagementsystem.exception.ErrorType;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.http.HttpStatus;
