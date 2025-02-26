@@ -18,7 +18,7 @@ import org.springframework.http.ResponseEntity;
  * @description 저자 API 명세
  */
 @Tag(name = "Author", description = "저자 API Endpoint")
-public interface AuthAPISpec {
+public interface AuthorAPISpec {
 
     @Operation(summary = "저자 생성 API", description = "저자의 이메일은 고유해야 합니다.")
     @ApiResponses(value = {

@@ -1,6 +1,6 @@
 package io.dongvelop.bookmanagementsystem.endpoint;
 
-import io.dongvelop.bookmanagementsystem.endpoint.spec.AuthAPISpec;
+import io.dongvelop.bookmanagementsystem.endpoint.spec.AuthorAPISpec;
 import io.dongvelop.bookmanagementsystem.exception.APIException;
 import io.dongvelop.bookmanagementsystem.payload.request.CreateAuthorRequest;
 import io.dongvelop.bookmanagementsystem.payload.request.UpdateAuthorRequest;
@@ -27,7 +27,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/authors")
 @RequiredArgsConstructor
-public class AuthorEndpoint implements AuthAPISpec {
+public class AuthorEndpoint implements AuthorAPISpec {
 
     private final AuthorService authorService;
 

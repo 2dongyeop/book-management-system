@@ -22,8 +22,8 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     boolean existsByEmail(String email);
 
     /**
-     * 페이징을 적용한 저자 목록 조회
+     * 저자 목록 조회. 추후 확장성을 대비해 미리 페치조인 작성함.
      */
     @Query("SELECT a FROM Author a JOIN FETCH a.books")
-    List<Author> findAuthorsWithPaging();
+    List<Author> findAuthors();
 }

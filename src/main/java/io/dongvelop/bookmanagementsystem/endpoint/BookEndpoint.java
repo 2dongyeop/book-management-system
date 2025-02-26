@@ -39,7 +39,7 @@ public class BookEndpoint implements BookAPISpec {
      */
     @Override
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> createBook(@RequestBody @Valid final CreateBookRequest request) throws APIException {
+    public ResponseEntity<CreateBookResponse> createBook(@RequestBody @Valid final CreateBookRequest request) throws APIException {
         return new ResponseEntity<>(
                 new CreateBookResponse(bookService.createBook(request).getId()),
                 HttpStatus.CREATED

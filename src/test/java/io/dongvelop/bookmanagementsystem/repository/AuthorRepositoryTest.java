@@ -73,7 +73,7 @@ class AuthorRepositoryTest {
             bookRepository.saveAll(List.of(book1, book2));
 
             // when
-            final List<Author> authors = authorRepository.findAuthorsWithPaging();
+            final List<Author> authors = authorRepository.findAuthors();
 
             // then
             SoftAssertions.assertSoftly(softly -> {

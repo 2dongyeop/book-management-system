@@ -52,7 +52,7 @@ public class AuthorService {
      */
     public List<Author> getAuthorList() {
         // 저자 목록이 많아졌을 때 한번에 조회할 경우, 메모리를 많이 차지할 수 있음.
-        return authorRepository.findAuthorsWithPaging();
+        return authorRepository.findAuthors();
     }
 
     /**

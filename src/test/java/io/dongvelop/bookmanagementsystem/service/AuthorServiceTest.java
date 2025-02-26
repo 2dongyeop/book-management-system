@@ -89,7 +89,7 @@ class AuthorServiceTest {
         void success(List<Author> mockedAuthors) {
 
             // given
-            given(authorRepository.findAuthorsWithPaging()).willReturn(mockedAuthors);
+            given(authorRepository.findAuthors()).willReturn(mockedAuthors);
 
             // when
             final List<Author> result = authorService.getAuthorList();
