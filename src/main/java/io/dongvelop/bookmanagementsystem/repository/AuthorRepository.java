@@ -24,6 +24,6 @@ public interface AuthorRepository extends JpaRepository<Author, Long> {
     /**
      * 저자 목록 조회. 추후 확장성을 대비해 미리 페치조인 작성함.
      */
-    @Query("SELECT a FROM Author a JOIN FETCH a.books")
+    @Query("SELECT a FROM Author a LEFT JOIN FETCH a.books")
     List<Author> findAuthors();
 }
